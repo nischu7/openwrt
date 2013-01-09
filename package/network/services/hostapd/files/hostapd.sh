@@ -112,6 +112,20 @@ hostapd_set_bss_options() {
 			[ -n "$wpa_group_rekey"  ] && append "$var" "wpa_group_rekey=$wpa_group_rekey" "$N"
 			[ -n "$wpa_pair_rekey"   ] && append "$var" "wpa_ptk_rekey=$wpa_pair_rekey"    "$N"
 			[ -n "$wpa_master_rekey" ] && append "$var" "wpa_gmk_rekey=$wpa_master_rekey"  "$N"
+			
+			config_get dynamic_vlan "$vif" dynamic_vlan
+			test -z "$dynamic_vlan" || {
+				append "$var" "dynamic_vlan=$dynamic_vlan" "$N"
+				config_get vlan_file "$vif" vlan_file
+				vlan_file=${vlan_file:-/etc/config/hostapd.vlan}
+				append "$var" "vlan_file=$vlan_file" "$N"
+				
+				config_get vlan_tagged_interface "$vif" vlan_tag
+				test -z "$vlan_tagged_interface" || append "$var
+				
+				config_get vlan_naming "$vif" vlan_naming
+				test -z "$vlan_naming" || append "$var" "vlan_na
+			}
 		;;
 		*wep*)
 			config_get key "$vif" key
